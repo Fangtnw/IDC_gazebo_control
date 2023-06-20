@@ -1,0 +1,38 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/fang/obodroid_ws/install/velocity_controllers/include/**",
+        "/home/fang/obodroid_ws/install/tricycle_steering_controller/include/**",
+        "/home/fang/obodroid_ws/install/tricycle_controller/include/**",
+        "/home/fang/obodroid_ws/install/bicycle_steering_controller/include/**",
+        "/home/fang/obodroid_ws/install/ackermann_steering_controller/include/**",
+        "/home/fang/obodroid_ws/install/steering_controllers_library/include/**",
+        "/home/fang/obodroid_ws/install/ros2_control_demo_example_1/include/**",
+        "/home/fang/obodroid_ws/install/position_controllers/include/**",
+        "/home/fang/obodroid_ws/install/joint_trajectory_controller/include/**",
+        "/home/fang/obodroid_ws/install/joint_state_broadcaster/include/**",
+        "/home/fang/obodroid_ws/install/imu_sensor_broadcaster/include/**",
+        "/home/fang/obodroid_ws/install/gripper_controllers/include/**",
+        "/home/fang/obodroid_ws/install/gazebo_ros2_control/include/**",
+        "/home/fang/obodroid_ws/install/effort_controllers/include/**",
+        "/home/fang/obodroid_ws/install/forward_command_controller/include/**",
+        "/home/fang/obodroid_ws/install/force_torque_sensor_broadcaster/include/**",
+        "/home/fang/obodroid_ws/install/diff_drive_controller/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/fang/IDC_keyboard_ws/src/keyboard_controller/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
