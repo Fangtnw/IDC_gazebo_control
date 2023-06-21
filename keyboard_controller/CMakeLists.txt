@@ -26,8 +26,6 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}/
 )
 
-
-
 add_executable(robot_teleop examples/robot_teleop.cpp)
 ament_target_dependencies(robot_teleop
   rclcpp
@@ -41,7 +39,6 @@ if(BUILD_TESTING)
 
   ament_lint_auto_find_test_dependencies()
 endif()
-
 
 ## Install
 install(
