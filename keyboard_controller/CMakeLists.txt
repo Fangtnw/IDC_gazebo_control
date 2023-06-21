@@ -20,20 +20,25 @@ find_package(geometry_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(yaml-cpp REQUIRED)
+
+
+include_directories(${YAML_CPP_INCLUDE_DIR})
 
 install(DIRECTORY
   config
   DESTINATION share/${PROJECT_NAME}/
 )
 
-
-
 add_executable(robot_teleop examples/robot_teleop.cpp)
 ament_target_dependencies(robot_teleop
   rclcpp
   rclcpp_action
   std_msgs
+  yaml-cpp
 )
+
+target_link_libraries(robot_teleop ${YAML_CPP_LIBRARIES})
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)

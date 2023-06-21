@@ -7,6 +7,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
 #include <std_msgs/msg/string.hpp>
+#include <yaml-cpp/yaml.h>
+#include <ament_index_cpp/get_package_share_directory.hpp>
 
 using namespace std::chrono_literals;
 
@@ -43,20 +45,20 @@ int main(int argc, char* argv[])
   // Set terminal attributes for non-blocking input
   setNonBlockingInput();
 
-  //double slider_increment = 0.02;  // Increment value for slider joint
-  //double arm_increment = 0.02;     // Increment value for arm joint
-  double joint_increment = 0.02;    // Increment value for camera joint
+  //double slider_increment = 0.02;  // Increment value for joint1
+  //double arm_increment = 0.02;     // Increment value for joint2
+  double joint_increment = 0.02;    // Increment value for every joints
 
-  double joint0_position = 0.0; 
-  double joint1_position = 0.0;  // Initial position of slider joint
-  double joint2_position = 0.0;     // Initial position of arm joint
-  double joint3_position = 0.0;     // Initial position of camera joint
-  double joint4_position = 0.0; 
-  double joint5_position = 0.0;  // Initial position of slider joint
-  double joint6_position = 0.0;     // Initial position of arm joint
+  double joint0_position = 0.0;     // Initial position of joint0
+  double joint1_position = 0.0;     // Initial position of joint1
+  double joint2_position = 0.0;     // Initial position of joint2
+  double joint3_position = 0.0;     // Initial position of joint3
+  double joint4_position = 0.0;     // Initial position of joint4
+  double joint5_position = 0.0;     // Initial position of joint5
+  double joint6_position = 0.0;     // Initial position of joint6
 
 
-   std::cout << "Press a key to control the robotic arm (q/a w/s e/d r/f to control each joint position, 1-3: Set incremental, h: Reset position, x: Quit)" << std::endl;
+   std::cout << "Press a key to control the robotic arm joint position, Set incremental speed, Reset position, x: Quit)" << std::endl;
 
   // Main loop
   while (rclcpp::ok()) {
@@ -64,60 +66,41 @@ int main(int argc, char* argv[])
     char c;
     if (read(STDIN_FILENO, &c, 1) == 1) {
       // Process the key and update joint positions
-      switch (c) {
-        case 'q':  // Increase arm joint position
+      std::string package_share_directory = ament_index_cpp::get_package_share_directory("keyboard_controller");
+      std::string file_path = package_share_directory + "/config/key_config.yaml";
+      YAML::Node keyConfig = YAML::LoadFile(file_path);
+      if (keyConfig[c]) {
+        std::string action = keyConfig[c].as<std::string>();
+
+        if (action == "+joint0_position") {
           joint0_position += joint_increment;
-          break;
-        case 'a':  // Decrease arm joint position
+        } else if (action == "-joint0_position") {
           joint0_position -= joint_increment;
-          break;
-        case 'w':  // Increase slider joint position
+        } else if (action == "+joint1_position") {
           joint1_position += joint_increment;
-          break;
-        case 's':  // Decrease slider joint position
+        } else if (action == "-joint1_position") {
           joint1_position -= joint_increment;
-          break;
-        case 'e':  // Increase camera joint position
+        } else if (action == "+joint2_position") {
           joint2_position += joint_increment;
-          break;
-        case 'd':  // Decrease camera joint position
+        } else if (action == "-joint2_position") {
           joint2_position -= joint_increment;
-          break;
-        case 'r':  // Increase camera joint position
+        } else if (action == "+joint3_position") {
           joint3_position += joint_increment;
-          break;
-        case 'f':  // Decrease camera joint position
+        } else if (action == "-joint3_position") {
           joint3_position -= joint_increment;
-          break;  
-        case 't':  // Increase slider joint position
+        } else if (action == "+joint4_position") {
           joint4_position += joint_increment;
-          break;
-        case 'g':  // Decrease slider joint position
+        } else if (action == "-joint4_position") {
           joint4_position -= joint_increment;
-          break;
-        case 'y':  // Increase camera joint position
+        } else if (action == "+joint5_position") {
           joint5_position += joint_increment;
-          break;
-        case 'h':  // Decrease camera joint position
+        } else if (action == "-joint5_position") {
           joint5_position -= joint_increment;
-          break;
-        case 'u':  // Increase camera joint position
+        } else if (action == "+joint6_position") {
           joint6_position += joint_increment;
-          break;
-        case 'j':  // Decrease camera joint position
+        } else if (action == "-joint6_position") {
           joint6_position -= joint_increment;
-          break; 
-          
-        case '1':  // Set incremental to 0.02
-          joint_increment = 0.02;
-          break;
-        case '2':  // Set incremental to 0.05
-          joint_increment = 0.05;
-          break;
-        case '3':  // Set incremental to 0.12
-          joint_increment = 0.12;
-           break;
-        case 'k':
+        } else if (action == "reset_positions") {
           joint0_position = 0;
           joint1_position = 0;
           joint2_position = 0;
@@ -125,14 +108,13 @@ int main(int argc, char* argv[])
           joint4_position = 0;
           joint5_position = 0;
           joint6_position = 0;
-          break;
-        case 'x':  // Quit
+        } else if (action == "quit") {
           restoreTerminalSettings();
           rclcpp::shutdown();
           return 0;
-        default:
-          continue;
+        }
       }
+      
       joint0_position = std::clamp(joint0_position, -0.65, 0.65);
       joint1_position = std::clamp(joint1_position, -3.14, 3.14);
       joint2_position = std::clamp(joint2_position, -3.14, 3.14);
