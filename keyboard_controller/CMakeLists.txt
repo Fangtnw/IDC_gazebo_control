@@ -30,6 +30,7 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}/
 )
 
+
 add_executable(position_keyboard_control examples/position_keyboard_control.cpp)
 ament_target_dependencies(position_keyboard_control
   rclcpp
@@ -54,7 +55,6 @@ if(BUILD_TESTING)
 
   ament_lint_auto_find_test_dependencies()
 endif()
-
 
 ## Install
 install(
