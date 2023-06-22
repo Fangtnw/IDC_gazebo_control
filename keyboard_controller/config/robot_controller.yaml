@@ -7,13 +7,31 @@ controller_manager:
 
     forward_position_controller:
       type: forward_command_controller/ForwardCommandController
+    
+    forward_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
 
   
 forward_position_controller:
   ros__parameters:
     joints:
-      - slider_joint
-      - arm_joint
+      - joint0
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
     interface_name: position
 
-
+forward_velocity_controller:
+  ros__parameters:
+    joints:
+      - joint0
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
+    interface_name: velocity

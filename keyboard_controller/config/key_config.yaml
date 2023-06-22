@@ -1,0 +1,24 @@
+a: +joint0_position
+z: -joint0_position
+s: +joint1_position
+x: -joint1_position
+d: +joint2_position
+c: -joint2_position
+f: +joint3_position
+v: -joint3_position
+g: +joint4_position
+b: -joint4_position
+h: +joint5_position
+n: -joint5_position
+j: +joint6_position
+m: -joint6_position
+increment_param:
+  joint0_increment: 0.1  #(-0.65,0.65)
+  joint1_increment: 0.3  #(-3.14,3.14)
+  joint2_increment: 0.3  #(-3.14,3.14)
+  joint3_increment: 0.3  #(-3.14,3.14)
+  joint4_increment: 0.3  #(-3.14,3.14)
+  joint5_increment: 0.3  #(-3.14,3.14)
+  joint6_increment: 0.3  #(-3.14,3.14)
+=: reset
+q: quit
