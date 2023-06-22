@@ -30,15 +30,23 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}/
 )
 
-add_executable(robot_teleop examples/robot_teleop.cpp)
-ament_target_dependencies(robot_teleop
+add_executable(position_keyboard_control examples/position_keyboard_control.cpp)
+ament_target_dependencies(position_keyboard_control
+  rclcpp
+  rclcpp_action
+  std_msgs
+  yaml-cpp
+)
+add_executable(multi_keyboard_control examples/multi_keyboard_control.cpp)
+ament_target_dependencies(multi_keyboard_control
   rclcpp
   rclcpp_action
   std_msgs
   yaml-cpp
 )
 
-target_link_libraries(robot_teleop ${YAML_CPP_LIBRARIES})
+target_link_libraries(position_keyboard_control ${YAML_CPP_LIBRARIES})
+target_link_libraries(multi_keyboard_control ${YAML_CPP_LIBRARIES})
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
@@ -51,7 +59,8 @@ endif()
 ## Install
 install(
   TARGETS
-    robot_teleop
+    position_keyboard_control
+    multi_keyboard_control
   DESTINATION
     lib/${PROJECT_NAME}
 )

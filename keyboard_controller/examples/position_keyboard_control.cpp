@@ -44,11 +44,11 @@ int main(int argc, char* argv[])
 
   // Set terminal attributes for non-blocking input
   setNonBlockingInput();
-
-  //double slider_increment = 0.02;  // Increment value for joint1
-  //double arm_increment = 0.02;     // Increment value for joint2
-  double joint_increment = 0.02;    // Increment value for every joints
-
+  
+  std::string package_share_directory = ament_index_cpp::get_package_share_directory("keyboard_controller");
+  std::string file_path = package_share_directory + "/config/key_config.yaml";
+    YAML::Node keyConfig = YAML::LoadFile(file_path);
+  
   double joint0_position = 0.0;     // Initial position of joint0
   double joint1_position = 0.0;     // Initial position of joint1
   double joint2_position = 0.0;     // Initial position of joint2
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
   double joint6_position = 0.0;     // Initial position of joint6
 
 
-   std::cout << "Press a key to control the robotic arm joint position, Set incremental speed, Reset position, x: Quit)" << std::endl;
+   std::cout << "Press a key to control the robotic arm joint position, Set incremental speed, Reset position, Quit)" << std::endl;
 
   // Main loop
   while (rclcpp::ok()) {
@@ -69,38 +69,46 @@ int main(int argc, char* argv[])
       std::string package_share_directory = ament_index_cpp::get_package_share_directory("keyboard_controller");
       std::string file_path = package_share_directory + "/config/key_config.yaml";
       YAML::Node keyConfig = YAML::LoadFile(file_path);
+      double joint0_increment = keyConfig["increment_param"]["joint0_increment"].as<double>();
+      double joint1_increment = keyConfig["increment_param"]["joint1_increment"].as<double>();
+      double joint2_increment = keyConfig["increment_param"]["joint2_increment"].as<double>();
+      double joint3_increment = keyConfig["increment_param"]["joint3_increment"].as<double>();
+      double joint4_increment = keyConfig["increment_param"]["joint4_increment"].as<double>();
+      double joint5_increment = keyConfig["increment_param"]["joint5_increment"].as<double>();
+      double joint6_increment = keyConfig["increment_param"]["joint6_increment"].as<double>();
+
       if (keyConfig[c]) {
         std::string action = keyConfig[c].as<std::string>();
 
         if (action == "+joint0_position") {
-          joint0_position += joint_increment;
+          joint0_position += joint0_increment;
         } else if (action == "-joint0_position") {
-          joint0_position -= joint_increment;
+          joint0_position -= joint0_increment;
         } else if (action == "+joint1_position") {
-          joint1_position += joint_increment;
+          joint1_position += joint1_increment;
         } else if (action == "-joint1_position") {
-          joint1_position -= joint_increment;
+          joint1_position -= joint1_increment;
         } else if (action == "+joint2_position") {
-          joint2_position += joint_increment;
+          joint2_position += joint2_increment;
         } else if (action == "-joint2_position") {
-          joint2_position -= joint_increment;
+          joint2_position -= joint2_increment;
         } else if (action == "+joint3_position") {
-          joint3_position += joint_increment;
+          joint3_position += joint3_increment;
         } else if (action == "-joint3_position") {
-          joint3_position -= joint_increment;
+          joint3_position -= joint3_increment;
         } else if (action == "+joint4_position") {
-          joint4_position += joint_increment;
+          joint4_position += joint4_increment;
         } else if (action == "-joint4_position") {
-          joint4_position -= joint_increment;
+          joint4_position -= joint4_increment;
         } else if (action == "+joint5_position") {
-          joint5_position += joint_increment;
+          joint5_position += joint5_increment;
         } else if (action == "-joint5_position") {
-          joint5_position -= joint_increment;
+          joint5_position -= joint5_increment;
         } else if (action == "+joint6_position") {
-          joint6_position += joint_increment;
+          joint6_position += joint6_increment;
         } else if (action == "-joint6_position") {
-          joint6_position -= joint_increment;
-        } else if (action == "reset_positions") {
+          joint6_position -= joint6_increment;
+        } else if (action == "reset") {
           joint0_position = 0;
           joint1_position = 0;
           joint2_position = 0;
