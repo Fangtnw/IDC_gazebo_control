@@ -38,14 +38,14 @@ int main(int argc, char* argv[])
   std::shared_ptr<rclcpp::Node> node =
       std::make_shared<rclcpp::Node>("command_publisher");
 
-  auto publisher = node->create_publisher<std_msgs::msg::Float64MultiArray>("/forward_position_controller/commands", 10);
+  auto publisher = node->create_publisher<std_msgs::msg::Float64MultiArray>("/forward_velocity_controller/commands", 10);
   
   RCLCPP_INFO(node->get_logger(), "Node created");
 
   // Set terminal attributes for non-blocking input
   setNonBlockingInput();
 
-  double joint_increment = 0.01;    // Increment value for every joints
+  double joint_increment = 10;    // Increment value for every joints
 
   double joint0_position = 0.0;     // Initial position of joint0
   double joint1_position = 0.0;     // Initial position of joint1
