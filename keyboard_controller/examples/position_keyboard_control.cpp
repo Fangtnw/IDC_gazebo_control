@@ -80,33 +80,33 @@ int main(int argc, char* argv[])
       if (keyConfig[c]) {
         std::string action = keyConfig[c].as<std::string>();
 
-        if (action == "+joint0_position") {
+        if (action == "+joint0") {
           joint0_position += joint0_increment;
-        } else if (action == "-joint0_position") {
+        } else if (action == "-joint0") {
           joint0_position -= joint0_increment;
-        } else if (action == "+joint1_position") {
+        } else if (action == "+joint1") {
           joint1_position += joint1_increment;
-        } else if (action == "-joint1_position") {
+        } else if (action == "-joint1") {
           joint1_position -= joint1_increment;
-        } else if (action == "+joint2_position") {
+        } else if (action == "+joint2") {
           joint2_position += joint2_increment;
-        } else if (action == "-joint2_position") {
+        } else if (action == "-joint2") {
           joint2_position -= joint2_increment;
-        } else if (action == "+joint3_position") {
+        } else if (action == "+joint3") {
           joint3_position += joint3_increment;
-        } else if (action == "-joint3_position") {
+        } else if (action == "-joint3") {
           joint3_position -= joint3_increment;
-        } else if (action == "+joint4_position") {
+        } else if (action == "+joint4") {
           joint4_position += joint4_increment;
-        } else if (action == "-joint4_position") {
+        } else if (action == "-joint4") {
           joint4_position -= joint4_increment;
-        } else if (action == "+joint5_position") {
+        } else if (action == "+joint5") {
           joint5_position += joint5_increment;
-        } else if (action == "-joint5_position") {
+        } else if (action == "-joint5") {
           joint5_position -= joint5_increment;
-        } else if (action == "+joint6_position") {
+        } else if (action == "+joint6") {
           joint6_position += joint6_increment;
-        } else if (action == "-joint6_position") {
+        } else if (action == "-joint6") {
           joint6_position -= joint6_increment;
         } else if (action == "reset") {
           joint0_position = 0;
@@ -123,11 +123,11 @@ int main(int argc, char* argv[])
         }
       }
       
-      joint0_position = std::clamp(joint0_position, -0.65, 0.65);
-      joint1_position = std::clamp(joint1_position, -3.14, 3.14);
-      joint2_position = std::clamp(joint2_position, -3.14, 3.14);
+      joint0_position = std::clamp(joint0_position, -0.75, 0.75);
+      joint1_position = std::clamp(joint1_position, -0.75, 0.75);
+      joint2_position = std::clamp(joint2_position, -0.75, 0.75);
       joint3_position = std::clamp(joint3_position, -3.14, 3.14);
-      joint4_position = std::clamp(joint4_position, -3.14, 3.14);
+      joint4_position = std::clamp(joint4_position, -1.00, 1.00);
       joint5_position = std::clamp(joint5_position, -3.14, 3.14);
       joint6_position = std::clamp(joint6_position, -3.14, 3.14);
 
@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
       auto command_msg = std::make_shared<std_msgs::msg::Float64MultiArray>();
       command_msg->layout.dim.push_back(std_msgs::msg::MultiArrayDimension());
       command_msg->layout.dim[0].stride = 1;
-      command_msg->layout.dim[0].size = 7;
+      command_msg->layout.dim[0].size = 6;
       command_msg->layout.dim[0].label = "";
       command_msg->layout.data_offset = 0;
       command_msg->data.push_back(joint0_position);
@@ -145,7 +145,6 @@ int main(int argc, char* argv[])
       command_msg->data.push_back(joint3_position);
       command_msg->data.push_back(joint4_position);
       command_msg->data.push_back(joint5_position);
-      command_msg->data.push_back(joint6_position);
       // Publish the command message
       publisher->publish(*command_msg);
     }

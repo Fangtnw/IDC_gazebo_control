@@ -5,7 +5,7 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 set(CMAKE_AUTOMOC ON)
 
-find_package(gazebo REQUIRED)
+find_package(gazebo QUIET)
 include_directories(${GAZEBO_INCLUDE_DIRS})
 include_directories(${GAZEBO_INCLUDE_DIRS} include/keyboard_plugin)
 link_directories(${GAZEBO_LIBRARY_DIRS})

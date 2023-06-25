@@ -1,17 +1,30 @@
-a: +joint0_position
-z: -joint0_position
-s: +joint1_position
-x: -joint1_position
-d: +joint2_position
-c: -joint2_position
-f: +joint3_position
-v: -joint3_position
-g: +joint4_position
-b: -joint4_position
-h: +joint5_position
-n: -joint5_position
-j: +joint6_position
-m: -joint6_position
+a: +joint0
+z: -joint0
+s: +joint1
+x: -joint1
+d: +joint2
+c: -joint2
+f: +joint3
+v: -joint3
+g: +joint4
+b: -joint4
+h: +joint5
+n: -joint5
+j: +joint6
+m: -joint6
+
+=: reset
+q: quit
+
+velocity_param: #(-1,1)
+  joint0_velocity: 1  
+  joint1_velocity: 1  
+  joint2_velocity: 1  
+  joint3_velocity: 12 
+  joint4_velocity: 50  
+  joint5_velocity: 105
+  joint6_velocity: 0.05  
+
 increment_param:
   joint0_increment: 0.05  #(-0.65,0.65)
   joint1_increment: 0.07  #(-3.14,3.14)
@@ -20,5 +33,3 @@ increment_param:
   joint4_increment: 0.07  #(-3.14,3.14)
   joint5_increment: 0.07  #(-3.14,3.14)
   joint6_increment: 0.07  #(-3.14,3.14)
-=: reset
-q: quit
