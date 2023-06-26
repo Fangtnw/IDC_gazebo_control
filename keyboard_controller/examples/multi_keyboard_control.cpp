@@ -52,7 +52,6 @@ int main(int argc, char* argv[])
   double joint3_position = 0.0;     // Initial position of joint3
   double joint4_position = 0.0;     // Initial position of joint4
   double joint5_position = 0.0;     // Initial position of joint5
-  double joint6_position = 0.0;     // Initial position of joint6
 
   double joint0_velocity = 0.0;     // Initial velocity of joint0
   double joint1_velocity = 0.0;     // Initial velocity of joint1
@@ -60,7 +59,6 @@ int main(int argc, char* argv[])
   double joint3_velocity = 0.0;     // Initial velocity of joint3
   double joint4_velocity = 0.0;     // Initial velocity of joint4
   double joint5_velocity = 0.0;     // Initial velocity of joint5
-  double joint6_velocity = 0.0;     // Initial velocity of joint6
 
    std::cout << "Press a key to control the robotic arm joint velocity, Set incremental speed, Reset position, Quit)" << std::endl;
 
@@ -79,7 +77,6 @@ int main(int argc, char* argv[])
       double joint3_vel = keyConfig["velocity_param"]["joint3_velocity"].as<double>();
       double joint4_vel = keyConfig["velocity_param"]["joint4_velocity"].as<double>();
       double joint5_vel = keyConfig["velocity_param"]["joint5_velocity"].as<double>();
-      double joint6_vel = keyConfig["velocity_param"]["joint6_velocity"].as<double>();
       if (keyConfig[c]) {
         std::string action = keyConfig[c].as<std::string>();
         if (action == "+joint0") {
@@ -106,10 +103,6 @@ int main(int argc, char* argv[])
           joint5_velocity = joint5_vel;
         } else if (action == "-joint5") {
           joint5_velocity = -joint5_vel;
-        } else if (action == "+joint6") {
-          joint6_velocity = joint6_vel;
-        } else if (action == "-joint6") {
-          joint6_velocity = -joint6_vel;
         } else if (action == "reset") {
           joint0_position = 0;
           joint1_position = 0;
@@ -117,14 +110,12 @@ int main(int argc, char* argv[])
           joint3_position = 0;
           joint4_position = 0;
           joint5_position = 0;
-          joint6_position = 0;
           joint0_velocity = 0;
           joint1_velocity = 0;
           joint2_velocity = 0;
           joint3_velocity = 0;
           joint4_velocity = 0;
           joint5_velocity = 0;
-          joint6_velocity = 0;
         } else if (action == "quit") {
           restoreTerminalSettings();
           rclcpp::shutdown();
@@ -145,7 +136,7 @@ int main(int argc, char* argv[])
       joint3_position = std::clamp(joint3_position, -3.14, 3.14);
       joint4_position = std::clamp(joint4_position, -3.14, 3.14);
       joint5_position = std::clamp(joint5_position, -3.14, 3.14);
-      joint6_position = std::clamp(joint6_position, -3.14, 3.14);
+      
 
       // Create and populate the command message
       auto command_msg_vel = std::make_shared<std_msgs::msg::Float64MultiArray>();
