@@ -20,9 +20,9 @@ velocity_param: #(-1,1)
   joint0_velocity: 1  
   joint1_velocity: 1  
   joint2_velocity: 1  
-  joint3_velocity: 12 
-  joint4_velocity: 50  
-  joint5_velocity: 105
+  joint3_velocity: 0.5
+  joint4_velocity: 0.5  
+  joint5_velocity: 0.5
   joint6_velocity: 0.05  
 
 increment_param:
