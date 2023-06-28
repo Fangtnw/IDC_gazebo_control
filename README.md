@@ -1,12 +1,12 @@
 # In progress task
-1. Gazebo Plugin (issue)
-2. Velocity control (might not be a good idea) + Simultaneous keyboard inputs (must if use velocity control)
+1. Ramp motion
+2. Add bring config to velocity controller
 
 # Run
 
 ```
-  ros2 run keyboard_controller position_keyboard_control
+  ros2 run velocity_controller velocity_controller
 ```
 
 # Key setting
-edit the key_config file in /keyboard_controller/config
+edit the key_config file in /velocity_controller/config/key_config.yaml
