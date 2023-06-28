@@ -11,19 +11,16 @@ key_config:
   b: -joint4
   h: +joint5
   n: -joint5
-  j: +joint6
-  m: -joint6
   =: reset
   q: quit
 
-velocity_param: #(-1,1)
+velocity_param: #target_vel
   joint0_velocity: 1  
   joint1_velocity: 1  
   joint2_velocity: 1  
-  joint3_velocity: 0.5
-  joint4_velocity: 0.5  
-  joint5_velocity: 0.5
-  joint6_velocity: 0.05  
+  joint3_velocity: 1
+  joint4_velocity: 1  
+  joint5_velocity: 1
 
 increment_param:
   joint0_increment: 0.05  #(-0.65,0.65)

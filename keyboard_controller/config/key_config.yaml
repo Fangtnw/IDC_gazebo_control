@@ -17,19 +17,19 @@ m: -joint6
 q: quit
 
 velocity_param: #(-1,1)
-  joint0_velocity: 0.5 #X
-  joint1_velocity: 0.5 #Y 
-  joint2_velocity: 0.5 #Z 
-  joint3_velocity: 0.5 #1
-  joint4_velocity: 0.5 #2
-  joint5_velocity: 0.5 #3
+  joint0_velocity: 1.0 #X
+  joint1_velocity: 1.0 #Y 
+  joint2_velocity: 1.0 #Z 
+  joint3_velocity: 1.0 #1
+  joint4_velocity: 1.0 #2
+  joint5_velocity: 1.0 #3
   joint6_velocity: 0.05  
 
 increment_param:
-  joint0_increment: 0.05  #(-0.65,0.65)
-  joint1_increment: 0.07  #(-3.14,3.14)
-  joint2_increment: 0.07  #(-3.14,3.14)
-  joint3_increment: 0.07  #(-3.14,3.14)
-  joint4_increment: 0.07  #(-3.14,3.14)
-  joint5_increment: 0.07  #(-3.14,3.14)
-  joint6_increment: 0.07  #(-3.14,3.14)
+  joint0_increment: 0.03  #(-0.65,0.65)
+  joint1_increment: 0.03  #(-3.14,3.14)
+  joint2_increment: 0.03  #(-3.14,3.14)
+  joint3_increment: 0.03  #(-3.14,3.14)
+  joint4_increment: 0.03  #(-3.14,3.14)
+  joint5_increment: 0.03  #(-3.14,3.14)
+  joint6_increment: 0.03  #(-3.14,3.14)
