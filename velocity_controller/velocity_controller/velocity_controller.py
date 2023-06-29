@@ -30,7 +30,7 @@ class CommandPublisher(Node):
                 velocity_params = key_config.get('velocity_param', {})
                 self.target_velocities = {
                     'joint0': max(min(float(velocity_params['joint0_velocity']), 3), -3),
-                    'joint1': max(min(float(velocity_params['joint1_velocity']), 0.5), -0.5),
+                    'joint1': max(min(float(velocity_params['joint1_velocity']), 0.7), -0.7),
                     'joint2': max(min(float(velocity_params['joint2_velocity']), 3), -3),
                     'joint3': max(min(float(velocity_params['joint3_velocity']), 3), -3),
                     'joint4': max(min(float(velocity_params['joint4_velocity']), 3), -3),
@@ -100,7 +100,7 @@ class CommandPublisher(Node):
 
 
     def calculate_ramped_velocity(self, target_velocity, current_time, action):
-        ramp_duration = 1.0  # Duration of the ramp in seconds (from 0 to target vel)
+        ramp_duration = 0.1  # Duration of the ramp in seconds (from 0 to target vel)
         acceleration = target_velocity / ramp_duration
         if action not in self.key_press_times:
             self.key_press_times[action] = current_time
@@ -108,7 +108,7 @@ class CommandPublisher(Node):
         elapsed_time = current_time - self.key_press_times[action]
 
         if elapsed_time <= ramp_duration:
-            return acceleration * elapsed_time
+            return target_velocity
         else:
             return target_velocity
 

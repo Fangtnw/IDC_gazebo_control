@@ -1,0 +1,18 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/fhp/Internship_ws/install/robot_description/local/lib/python3.10/dist-packages",
+        "/home/fhp/FRA333_lab3_ws/install/ros2_control_demo_3r_robot/local/lib/python3.10/dist-packages",
+        "/home/fhp/FRA333_lab3_ws/install/poohpooh_description/local/lib/python3.10/dist-packages",
+        "/home/fhp/FRA532-MobileRobot/MobileRobot_ws/install/msg_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/fhp/Internship_ws/install/robot_description/local/lib/python3.10/dist-packages",
+        "/home/fhp/FRA333_lab3_ws/install/ros2_control_demo_3r_robot/local/lib/python3.10/dist-packages",
+        "/home/fhp/FRA333_lab3_ws/install/poohpooh_description/local/lib/python3.10/dist-packages",
+        "/home/fhp/FRA532-MobileRobot/MobileRobot_ws/install/msg_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

@@ -1,16 +1,16 @@
 key_config:
-  a: +joint0
-  z: -joint0
-  s: +joint1
-  x: -joint1
-  d: +joint2
-  c: -joint2
-  f: +joint3
-  v: -joint3
-  g: +joint4
-  b: -joint4
-  h: +joint5
-  n: -joint5
+  d: +joint0
+  a: -joint0
+  w: +joint1
+  s: -joint1
+  r: +joint2
+  f: -joint2
+  j: +joint3
+  l: -joint3
+  i: +joint4
+  k: -joint4
+  u: +joint5
+  o: -joint5
   =: reset
   q: quit
 
