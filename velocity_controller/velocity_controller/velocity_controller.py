@@ -20,21 +20,22 @@ class CommandPublisher(Node):
         self.load_key_map()
 
     def load_key_map(self):
-        package_share_directory = os.path.join(
-            ament_index_python.get_package_share_directory('velocity_controller'))
-        file_path = os.path.join(package_share_directory, 'config', 'key_config.yaml')
+        package_share_directory = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config')
+        file_path = os.path.join(package_share_directory, 'key_config.yaml')
         with open(file_path, 'r') as file:
             try:
                 key_config = yaml.safe_load(file)
-                self.key_map = key_config['key_config']
+                mappings = key_config.get('key_config', {})
+                self.key_map = {value: key for key, value in mappings.items()}
+                #self.key_map = key_config.get('key_config', {})
                 velocity_params = key_config.get('velocity_param', {})
                 self.target_velocities = {
-                    'joint0': max(min(float(velocity_params['joint0_velocity']), 3), -3),
-                    'joint1': max(min(float(velocity_params['joint1_velocity']), 0.7), -0.7),
-                    'joint2': max(min(float(velocity_params['joint2_velocity']), 3), -3),
-                    'joint3': max(min(float(velocity_params['joint3_velocity']), 3), -3),
-                    'joint4': max(min(float(velocity_params['joint4_velocity']), 3), -3),
-                    'joint5': max(min(float(velocity_params['joint5_velocity']), 3), -3)
+                    'joint0': max(min(float(velocity_params['joint0_velocity']), 3), 0.6),
+                    'joint1': max(min(float(velocity_params['joint1_velocity']), 0.7),  0.6),
+                    'joint2': max(min(float(velocity_params['joint2_velocity']), 3), 0.6),
+                    'joint3': max(min(float(velocity_params['joint3_velocity']), 3), 0.6),
+                    'joint4': max(min(float(velocity_params['joint4_velocity']), 3), 0.6),
+                    'joint5': max(min(float(velocity_params['joint5_velocity']), 3), 0.6)
                 }
             except yaml.YAMLError as e:
                 self.get_logger().error(f"Error loading key map: {str(e)}")
@@ -45,8 +46,15 @@ class CommandPublisher(Node):
     def on_press(self, key):
         try:
             received_key = key.char
+            received_key2 = key
+            print(received_key,received_key2)
+           
         except AttributeError:
-            return
+            if key == keyboard.Key.num_lock:
+                received_key = '5'
+            else:
+                return
+            
 
         if received_key in self.key_map:
             action = self.key_map[received_key]
@@ -92,7 +100,7 @@ class CommandPublisher(Node):
                         -float(self.target_velocities[f'joint{joint_index}']), current_time, action)
                 elif action == 'reset':
                     self.joint_velocities = [0.0] * 6
-                    self.joint_positions = [0.0] * 6
+                    #self.joint_positions = [0.0] * 6
                 elif action == 'quit':
                     self.get_logger().info('Node shutting down...')
                     rclpy.shutdown()
@@ -100,15 +108,16 @@ class CommandPublisher(Node):
 
 
     def calculate_ramped_velocity(self, target_velocity, current_time, action):
-        ramp_duration = 0.1  # Duration of the ramp in seconds (from 0 to target vel)
-        acceleration = target_velocity / ramp_duration
+        ramp_duration = 2  # Duration of the ramp in seconds (from 0 to target vel)
+        initial_velocity = 0.4 if action.startswith('+') else -0.4
+        acceleration = (target_velocity - initial_velocity) / ramp_duration
         if action not in self.key_press_times:
             self.key_press_times[action] = current_time
 
         elapsed_time = current_time - self.key_press_times[action]
 
         if elapsed_time <= ramp_duration:
-            return target_velocity
+            return initial_velocity + (acceleration * elapsed_time)
         else:
             return target_velocity
 

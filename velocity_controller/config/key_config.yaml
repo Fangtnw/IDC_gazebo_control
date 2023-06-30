@@ -1,18 +1,18 @@
 key_config:
-  d: +joint0
-  a: -joint0
-  w: +joint1
-  s: -joint1
-  r: +joint2
-  f: -joint2
-  j: +joint3
-  l: -joint3
-  i: +joint4
-  k: -joint4
-  u: +joint5
-  o: -joint5
-  =: reset
-  q: quit
+  +joint0 : 'd'  
+  -joint0 : 'a'
+  +joint1 : 'w'
+  -joint1 : 's'
+  +joint2 : 'r'
+  -joint2 : 'f'
+  +joint3 : '4'
+  -joint3 : '6'
+  +joint4 : '8'
+  -joint4 : '2'
+  +joint5 : '9'
+  -joint5 : '7'
+  reset : '='
+  quit : '-'
 
 velocity_param: #target_vel
   joint0_velocity: 1  
