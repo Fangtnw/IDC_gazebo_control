@@ -191,8 +191,6 @@ class CommandPublisher(Node):
             self.get_logger().error(f'Error spawning controller: {str(e)}')
 
         python_executable = sys.executable
-        if not os.path.isabs(python_executable):
-            python_executable = shutil.which(python_executable)
         os.execv(python_executable, [python_executable] + sys.argv)     
 
         #super().__init__('command_publisher')
