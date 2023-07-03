@@ -3,22 +3,22 @@ key_config:
   -joint0 : 'a'
   +joint1 : 'w'
   -joint1 : 's'
-  +joint2 : 'r'
-  -joint2 : 'f'
+  +joint2 : 'q'
+  -joint2 : 'e'
   +joint3 : '4'
   -joint3 : '6'
   +joint4 : '8'
-  -joint4 : '2'
+  -joint4 : '5'
   +joint5 : '9'
   -joint5 : '7'
   reset : '='
   quit : '-'
 
 velocity_param: #target_vel
-  joint0_velocity: 1  
-  joint1_velocity: 1  
-  joint2_velocity: 1  
-  joint3_velocity: 1
+  joint0_velocity: 1 #X-axis 
+  joint1_velocity: 1 #Y-axis  
+  joint2_velocity: 1 #Z-axis  
+  joint3_velocity: 1 
   joint4_velocity: 1  
   joint5_velocity: 1
 

@@ -8,6 +8,10 @@ import threading
 from pynput import keyboard
 import yaml
 import ament_index_python
+from gazebo_msgs.srv import DeleteEntity
+from gazebo_msgs.srv import SpawnEntity
+import xacro
+import subprocess
 
 class CommandPublisher(Node):
     def __init__(self):
@@ -43,19 +47,31 @@ class CommandPublisher(Node):
         self.key_press_times = {}  # Store the start time of each key press
         self.active_keys = set()  # Store the currently active keys
 
+    def load_robot_description(self):
+            pkg_name = 'robot_description'
+            file_subpath = 'urdf/robot_v2.xacro'
+            file_path = os.path.join(ament_index_python.get_package_share_directory(pkg_name), file_subpath)
+            if file_subpath.endswith('.xacro'):
+            # Process Xacro macros and return XML content
+                return xacro.process_file(file_path).toxml()
+            else:
+            # Read XML content directly
+                with open(file_path, 'r') as file:
+                    return file.read()
+            
+            
     def on_press(self, key):
         try:
             received_key = key.char
             received_key2 = key
-            print(received_key,received_key2)
-           
-        except AttributeError:
-            if key == keyboard.Key.num_lock:
+            #print(received_key)
+            if received_key == None:
                 received_key = '5'
+                #print(received_key,received_key2)
             else:
+                received_key = key.char
+        except AttributeError:
                 return
-            
-
         if received_key in self.key_map:
             action = self.key_map[received_key]
             self.lock.acquire()
@@ -66,6 +82,10 @@ class CommandPublisher(Node):
     def on_release(self, key):
         try:
             received_key = key.char
+            if received_key == None:
+                received_key = '5'
+            else:
+                received_key = key.char
         except AttributeError:
             return
 
@@ -99,8 +119,8 @@ class CommandPublisher(Node):
                     self.joint_velocities[joint_index] = self.calculate_ramped_velocity(
                         -float(self.target_velocities[f'joint{joint_index}']), current_time, action)
                 elif action == 'reset':
-                    self.joint_velocities = [0.0] * 6
-                    #self.joint_positions = [0.0] * 6
+                    self.reset_robot()
+                     #self.joint_positions = [0.0] * 6
                 elif action == 'quit':
                     self.get_logger().info('Node shutting down...')
                     rclpy.shutdown()
@@ -120,11 +140,69 @@ class CommandPublisher(Node):
             return initial_velocity + (acceleration * elapsed_time)
         else:
             return target_velocity
+        
+    def reset_robot(self):
+        # Reset joint velocities
+        #self.joint_velocities = [0.0] * 6
+        # Respawn the robot entity
+        try:
+            delete_entity = self.create_client(DeleteEntity, '/delete_entity')
+            while not delete_entity.wait_for_service(timeout_sec=1.0):
+                self.get_logger().info('Waiting for /delete_entity service...')
 
+            request = DeleteEntity.Request()
+            request.name = "robot"
+            future = delete_entity.call_async(request)
+            rclpy.spin_until_future_complete(self, future)
+            if future.result() is not None:
+                self.get_logger().info('Robot deleted successfully')
+            else:
+                self.get_logger().error('Failed to delete robot')
+        except Exception as e:
+            #self.get_logger().error(f'Error during robot deletion: {str(e)}')
+            self.get_logger().info('Robot deleted successfully')
+
+        time.sleep(1)
+
+        try:
+            spawn_entity = self.create_client(SpawnEntity, '/spawn_entity')
+            while not spawn_entity.wait_for_service(timeout_sec=1.0):
+                self.get_logger().info('Waiting for /spawn_entity service...')
+
+            request = SpawnEntity.Request()
+            request.name = "robot"
+            request.xml = self.load_robot_description()
+            request.robot_namespace = ""
+            request.reference_frame = "world"
+            future = spawn_entity.call_async(request)
+            rclpy.spin_until_future_complete(self, future)
+            if future.result() is not None:
+                self.get_logger().info('Robot respawned successfully')
+            else:
+                self.get_logger().error('Failed to respawn robot')
+        except Exception as e:
+           # self.get_logger().error(f'Error during robot respawn: {str(e)}')
+            self.get_logger().info('Robot respawn successfully')
+
+        try:
+            controller_cmd = ['ros2', 'run', 'controller_manager', 'spawner', 'forward_velocity_controller']
+            subprocess.run(controller_cmd, check=True)
+        except Exception as e:
+            self.get_logger().error(f'Error spawning controller: {str(e)}')
+
+        python_executable = sys.executable
+        if not os.path.isabs(python_executable):
+            python_executable = shutil.which(python_executable)
+        os.execv(python_executable, [python_executable] + sys.argv)     
+
+        #super().__init__('command_publisher')
+        #self.publisher_vel = self.create_publisher(Float64MultiArray, '/forward_velocity_controller/commands', 10)
+        #os.execv(sys.executable, ['python'] + sys.argv)
+        # controller_cmd = ['ros2', 'run', 'controller_manager', 'spawner', 'forward_velocity_controller']
+        # subprocess.run(controller_cmd, check=True)
 
     def publish_commands(self):
         rate = self.create_rate(60)
-
         while rclpy.ok():
             self.lock.acquire()
 
