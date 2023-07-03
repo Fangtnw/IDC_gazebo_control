@@ -1,6 +1,6 @@
-# In progress task
-1. Ramp motion
-2. Add bring config to velocity controller
+# To-do task
+1. set home position button (call delete and respawn entity service)
+2. fix No.5 key input error (optional)
 
 # Run
 
