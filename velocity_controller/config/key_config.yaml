@@ -9,8 +9,8 @@ key_config:
   -joint3 : '6'
   +joint4 : '8'
   -joint4 : '5'
-  +joint5 : '9'
-  -joint5 : '7'
+  +joint5 : '7'
+  -joint5 : '9'
   reset : '='
   quit : '-'
 
@@ -18,15 +18,7 @@ velocity_param: #target_vel
   joint0_velocity: 1 #X-axis 
   joint1_velocity: 1 #Y-axis  
   joint2_velocity: 1 #Z-axis  
-  joint3_velocity: 1 
-  joint4_velocity: 1  
-  joint5_velocity: 1
+  joint3_velocity: 1 #J4
+  joint4_velocity: 1 #J5 
+  joint5_velocity: 1 #J6
 
-increment_param:
-  joint0_increment: 0.05  #(-0.65,0.65)
-  joint1_increment: 0.07  #(-3.14,3.14)
-  joint2_increment: 0.07  #(-3.14,3.14)
-  joint3_increment: 0.07  #(-3.14,3.14)
-  joint4_increment: 0.07  #(-3.14,3.14)
-  joint5_increment: 0.07  #(-3.14,3.14)
-  joint6_increment: 0.07  #(-3.14,3.14)
