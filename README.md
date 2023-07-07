@@ -1,6 +1,3 @@
-# To-do task
-Connect with a webserver
-
 # Run
 
 ```
