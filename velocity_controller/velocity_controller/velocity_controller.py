@@ -3,7 +3,7 @@ import os
 import time
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float64MultiArray, MultiArrayDimension
+from std_msgs.msg import Float64MultiArray, MultiArrayDimension,Empty
 import threading
 from pynput import keyboard
 import yaml
@@ -12,6 +12,8 @@ from gazebo_msgs.srv import DeleteEntity
 from gazebo_msgs.srv import SpawnEntity
 import xacro
 import subprocess
+
+from msg_interfaces.srv import TimeOut
 
 class CommandPublisher(Node):
     def __init__(self):
@@ -22,6 +24,22 @@ class CommandPublisher(Node):
         self.get_logger().info('Node created')
         self.lock = threading.Lock()
         self.load_key_map()
+##----------------------------------------------------------------------------------------------------##
+        self.spawn_server = self.create_service(TimeOut,"/timeout_command",self.timeout_callback)
+        self.timeout_req = Empty()
+        self.timeout = False
+
+    def timeout_callback(self,request,response):
+        self.timeout_req = request.time_out_command
+        self.timeout = True
+        self.joint_velocities = [0.0] * 6
+        self.get_logger().info('Get timeout command request success!!!!')
+        command_msg_vel = Float64MultiArray()
+        command_msg_vel.data = self.joint_velocities
+        command_msg_vel.layout.dim = [MultiArrayDimension(label='velocity', size=len(command_msg_vel.data))]
+        self.publisher_vel.publish(command_msg_vel)
+        return response
+##----------------------------------------------------------------------------------------------------##
 
     def load_key_map(self):
         package_share_directory = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config')
@@ -234,7 +252,9 @@ def main(args=None):
     thread.daemon = True
     thread.start()
 
-    command_publisher.publish_commands()
+    if command_publisher.timeout == False:
+        command_publisher.publish_commands()
+        
     rclpy.shutdown()
 
 if __name__ == '__main__':
