@@ -1,0 +1,20 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/fang/obodroid_ws/build/velocity_controller",
+        "/home/fang/obodroid_ws/install/velocity_controller/lib/python3.10/site-packages",
+        "/home/fang/obodroid_ws/build/rqt_joint_trajectory_controller",
+        "/home/fang/obodroid_ws/install/rqt_joint_trajectory_controller/lib/python3.10/site-packages",
+        "/home/fang/obodroid_ws/install/robot_description/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/fang/obodroid_ws/build/velocity_controller",
+        "/home/fang/obodroid_ws/install/velocity_controller/lib/python3.10/site-packages",
+        "/home/fang/obodroid_ws/build/rqt_joint_trajectory_controller",
+        "/home/fang/obodroid_ws/install/rqt_joint_trajectory_controller/lib/python3.10/site-packages",
+        "/home/fang/obodroid_ws/install/robot_description/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

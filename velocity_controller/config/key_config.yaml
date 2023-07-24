@@ -12,7 +12,6 @@ key_config:
   +joint5 : '7'
   -joint5 : '9'
   reset : '='
-  quit : '-'
 
 velocity_param: #target_vel
   joint0_velocity: 1 #X-axis 

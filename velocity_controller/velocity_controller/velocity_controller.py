@@ -67,7 +67,7 @@ class CommandPublisher(Node):
 
     def load_robot_description(self):
             pkg_name = 'robot_description'
-            file_subpath = 'urdf/robot_v2.xacro'
+            file_subpath = 'urdf/robot.xacro'
             file_path = os.path.join(ament_index_python.get_package_share_directory(pkg_name), file_subpath)
             if file_subpath.endswith('.xacro'):
             # Process Xacro macros and return XML content
@@ -139,10 +139,12 @@ class CommandPublisher(Node):
                 elif action == 'reset':
                     self.reset_robot()
                      #self.joint_positions = [0.0] * 6
-                elif action == 'quit':
-                    self.get_logger().info('Node shutting down...')
-                    rclpy.shutdown()
-                    sys.exit(0)
+                # elif action == 'connect':
+                #     self.run_node_client()
+                # elif action == 'quit':
+                #     self.get_logger().info('Node shutting down...')
+                #     rclpy.shutdown()
+                #     sys.exit(0)
 
 
     def calculate_ramped_velocity(self, target_velocity, current_time, action):
@@ -177,8 +179,8 @@ class CommandPublisher(Node):
             else:
                 self.get_logger().error('Failed to delete robot')
         except Exception as e:
-            #self.get_logger().error(f'Error during robot deletion: {str(e)}')
-            self.get_logger().info('Robot deleted successfully')
+            self.get_logger().error(f'Error during robot deletion: {str(e)}')
+            #self.get_logger().info('Robot deleted successfully')
 
         time.sleep(1)
 
@@ -237,6 +239,14 @@ class CommandPublisher(Node):
 
             rclpy.spin_once(self)
             rate.sleep()
+
+    def run_node_client(self):
+        try:
+            package_share_directory = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config')
+            script_path = os.path.join(package_share_directory, 'connect-server.bash')
+            subprocess.run([script_path], check=True)
+        except Exception as e:
+            self.get_logger().error(f'Error running node client.js: {str(e)}')
 
 def main(args=None):
     rclpy.init(args=args)
