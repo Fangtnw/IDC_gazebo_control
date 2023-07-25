@@ -30,7 +30,7 @@ class CommandPublisher(Node):
         self.timeout = False
 
     def timeout_callback(self,request,response):
-        self.timeout_req = request.time_out_command
+        self.timeout_req = request.timeout_command
         self.timeout = True
         self.joint_velocities = [0.0] * 6
         self.get_logger().info('Get timeout command request success!!!!')
