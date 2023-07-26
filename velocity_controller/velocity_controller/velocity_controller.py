@@ -13,7 +13,7 @@ from gazebo_msgs.srv import SpawnEntity
 import xacro
 import subprocess
 
-from msg_interfaces.srv import TimeOut
+from msg_interfaces.srv import TimeOut,FreePlay,Reset,Start
 
 class CommandPublisher(Node):
     def __init__(self):
@@ -25,19 +25,55 @@ class CommandPublisher(Node):
         self.lock = threading.Lock()
         self.load_key_map()
 ##----------------------------------------------------------------------------------------------------##
+        self.timer = self.create_timer(0.1,self.timer_callback)
+
+        self.free_play_server = self.create_service(FreePlay,"/free_play_command",self.free_play_callback)
+        self.reset_server = self.create_service(Reset,"/reset_command",self.reset_callback)
+        self.start_server = self.create_service(Start,"/start_command",self.start_callback)
         self.spawn_server = self.create_service(TimeOut,"/timeout_command",self.timeout_callback)
+        self.free_play_req = Empty()
+        self.reset_req = Empty()
+        self.start_req = Empty()
         self.timeout_req = Empty()
-        self.timeout = False
+        self.keyboard_control = False
+
+    def timer_callback(self):
+        if self.keyboard_control == True:
+            self.publish_commands()
+        elif self.keyboard_control == False:
+            self.joint_velocities = [0.0] * 6
+            command_msg_vel = Float64MultiArray()
+            command_msg_vel.data = self.joint_velocities
+            command_msg_vel.layout.dim = [MultiArrayDimension(label='velocity', size=len(command_msg_vel.data))]
+            self.publisher_vel.publish(command_msg_vel)
+
+    def free_play_callback(self,request,response):
+        self.free_play_req = request.free_play_command
+        self.keyboard_control = True
+        self.get_logger().info('Get free play command request success!!!!')
+        return response
+    
+    def reset_callback(self,request,response):
+        self.reset_req = request.reset_command
+        self.keyboard_control = False
+        self.get_logger().info('Get reset command request success!!!!')
+        return response
+    
+    def start_callback(self,request,response):
+        self.start_req = request.start_command
+        self.keyboard_control = True
+        self.get_logger().info('Get start command request success!!!!')
+        return response
 
     def timeout_callback(self,request,response):
         self.timeout_req = request.timeout_command
-        self.timeout = True
-        self.joint_velocities = [0.0] * 6
+        self.keyboard_control = False
+        # self.joint_velocities = [0.0] * 6
         self.get_logger().info('Get timeout command request success!!!!')
-        command_msg_vel = Float64MultiArray()
-        command_msg_vel.data = self.joint_velocities
-        command_msg_vel.layout.dim = [MultiArrayDimension(label='velocity', size=len(command_msg_vel.data))]
-        self.publisher_vel.publish(command_msg_vel)
+        # command_msg_vel = Float64MultiArray()
+        # command_msg_vel.data = self.joint_velocities
+        # command_msg_vel.layout.dim = [MultiArrayDimension(label='velocity', size=len(command_msg_vel.data))]
+        # self.publisher_vel.publish(command_msg_vel)
         return response
 ##----------------------------------------------------------------------------------------------------##
 
@@ -220,25 +256,25 @@ class CommandPublisher(Node):
         # subprocess.run(controller_cmd, check=True)
 
     def publish_commands(self):
-        rate = self.create_rate(60)
-        while rclpy.ok():
-            self.lock.acquire()
+        # rate = self.create_rate(60)
+        # while rclpy.ok():
+        self.lock.acquire()
 
-            command_msg_vel = Float64MultiArray()
-            command_msg_vel.data = self.joint_velocities[:6]
+        command_msg_vel = Float64MultiArray()
+        command_msg_vel.data = self.joint_velocities[:6]
 
-            command_msg_pos = Float64MultiArray()
-            command_msg_pos.data = self.joint_positions[:6]
+        command_msg_pos = Float64MultiArray()
+        command_msg_pos.data = self.joint_positions[:6]
 
-            command_msg_vel.layout.dim = [MultiArrayDimension(label='velocity', size=len(command_msg_vel.data))]
-            #command_msg_pos.layout.dim = [MultiArrayDimension(label='position', size=len(command_msg_pos.data))]
+        command_msg_vel.layout.dim = [MultiArrayDimension(label='velocity', size=len(command_msg_vel.data))]
+        #command_msg_pos.layout.dim = [MultiArrayDimension(label='position', size=len(command_msg_pos.data))]
 
-            self.publisher_vel.publish(command_msg_vel)
+        self.publisher_vel.publish(command_msg_vel)
 
-            self.lock.release()
+        self.lock.release()
 
-            rclpy.spin_once(self)
-            rate.sleep()
+        # rclpy.spin_once(self)
+        # rate.sleep()
 
     def run_node_client(self):
         try:
@@ -261,10 +297,11 @@ def main(args=None):
     thread = threading.Thread(target=set_non_blocking_input)
     thread.daemon = True
     thread.start()
+    # if command_publisher.keyboard_control == True:
+    #     command_publisher.publish_commands()
 
-    if command_publisher.timeout == False:
-        command_publisher.publish_commands()
-        
+    rclpy.spin(command_publisher)
+    command_publisher.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
