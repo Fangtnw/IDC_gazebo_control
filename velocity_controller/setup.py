@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             "velocity_controller = velocity_controller.velocity_controller:main",
+            
         ],
     },
 )

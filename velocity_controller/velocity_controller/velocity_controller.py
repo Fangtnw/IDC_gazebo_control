@@ -13,7 +13,7 @@ from gazebo_msgs.srv import SpawnEntity
 import xacro
 import subprocess
 
-from msg_interfaces.srv import TimeOut,FreePlay,Reset,Start
+from msg_interfaces.srv import TimeOut,FreePlay,Reset,Start,OpenKey,CloseKey
 
 class CommandPublisher(Node):
     def __init__(self):
@@ -27,13 +27,17 @@ class CommandPublisher(Node):
 ##----------------------------------------------------------------------------------------------------##
         self.timer = self.create_timer(0.1,self.timer_callback)
 
-        self.free_play_server = self.create_service(FreePlay,"/free_play_command",self.free_play_callback)
-        self.reset_server = self.create_service(Reset,"/reset_command",self.reset_callback)
-        self.start_server = self.create_service(Start,"/start_command",self.start_callback)
+        # self.free_play_server = self.create_service(FreePlay,"/free_play_command",self.free_play_callback)
+        # self.reset_server = self.create_service(Reset,"/reset_command",self.reset_callback)
+        # self.start_server = self.create_service(Start,"/start_command",self.start_callback)
         self.spawn_server = self.create_service(TimeOut,"/timeout_command",self.timeout_callback)
-        self.free_play_req = Empty()
-        self.reset_req = Empty()
-        self.start_req = Empty()
+        self.open_key_server = self.create_service(OpenKey,"/open_key_command",self.open_key_callback)
+        self.open_key_server = self.create_service(CloseKey,"/close_key_command",self.close_key_callback)
+        # self.free_play_req = Empty()
+        self.open_key_req = Empty()
+        self.close_key_req = Empty()
+        # self.reset_req = Empty()
+        # self.start_req = Empty()
         self.timeout_req = Empty()
         self.keyboard_control = False
 
@@ -47,23 +51,35 @@ class CommandPublisher(Node):
             command_msg_vel.layout.dim = [MultiArrayDimension(label='velocity', size=len(command_msg_vel.data))]
             self.publisher_vel.publish(command_msg_vel)
 
-    def free_play_callback(self,request,response):
-        self.free_play_req = request.free_play_command
+    # def free_play_callback(self,request,response):
+    #     self.free_play_req = request.start_command
+    #     self.keyboard_control = True
+    #     self.get_logger().info('Get free play command request success!!!!')
+    #     return response
+    
+    def open_key_callback(self,request,response):
+        self.open_key_req = request.open_key_command
         self.keyboard_control = True
-        self.get_logger().info('Get free play command request success!!!!')
+        self.get_logger().info('Get open key command request success!!!!')
         return response
     
-    def reset_callback(self,request,response):
-        self.reset_req = request.reset_command
+    def close_key_callback(self,request,response):
+        self.close_key_req = request.close_key_command
         self.keyboard_control = False
-        self.get_logger().info('Get reset command request success!!!!')
+        self.get_logger().info('Get close key command request success!!!!')
         return response
     
-    def start_callback(self,request,response):
-        self.start_req = request.start_command
-        self.keyboard_control = True
-        self.get_logger().info('Get start command request success!!!!')
-        return response
+    # def reset_callback(self,request,response):
+    #     self.reset_req = request.reset_command
+    #     self.keyboard_control = False
+    #     self.get_logger().info('Get reset command request success!!!!')
+    #     return response
+    
+    # def start_callback(self,request,response):
+    #     self.start_req = request.start_command
+    #     self.keyboard_control = True
+    #     self.get_logger().info('Get start command request success!!!!')
+    #     return response
 
     def timeout_callback(self,request,response):
         self.timeout_req = request.timeout_command
