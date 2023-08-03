@@ -94,7 +94,7 @@ class CommandPublisher(Node):
 ##----------------------------------------------------------------------------------------------------##
 
     def load_key_map(self):
-        file_path = '/home/fhp/IDC/IDC_ws/src/IDC-Simulation/robot_description/config/properties.yaml'
+        file_path = '/home/User/IDC/IDC_ws/src/IDC-Simulation/robot_description/config/properties.yaml'
         with open(file_path, 'r') as file:
             try:
                 key_config = yaml.safe_load(file)
