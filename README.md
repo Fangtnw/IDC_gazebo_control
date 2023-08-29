@@ -1,8 +1,9 @@
-# Run
+# IDC RoBoCon 2023
+Script for controling the robotic arm in gazebo made for IDC2023 online competition
 
-```
-  ros2 run velocity_controller velocity_controller
-```
+# Please clone this
+1. IDC Simulation
+https://github.com/F-H-P/IDC-Simulation
+2. IDC Webserver
+https://github.com/Fangtnw/IDC_Webserver
 
-# Key setting
-edit the key_config file in /velocity_controller/config/key_config.yaml
