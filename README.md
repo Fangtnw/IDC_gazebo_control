@@ -1,5 +1,5 @@
-# IDC RoBoCon 2023
-Script for controling the robotic arm in gazebo made for IDC2023 online competition
+# Keyboard control node
+Script for using velocity controller to control the robotic arm in gazebo made for IDC2023 online competition
 
 # Please clone this
 1. IDC Simulation
